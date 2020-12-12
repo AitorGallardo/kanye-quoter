@@ -33,11 +33,45 @@ h1 i:hover {
     border: 0.1rem solid white;
 }
 
-.img-container {
-    position: relative;
-    width: 50vw;
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
 }
-.img-container img{
+
+p#quote {
+    display: inline-block;
+    background-color: rgb(223, 223, 230, 0.3);
+    padding: 1rem;
+    border-radius: 20px;
+    font-family: "Nerko One", cursive;
+    word-wrap: break-word;
+    max-width: 30vw;
+    opacity: 1;
+    transition: opacity 3s ease;
+}
+
+p#quote.hidden {
+    display: none;
+    opacity: 0;
+    font-family: "Nerko One", cursive;
+}
+
+#img-container {
+    background-color: red;
+    position: relative;
+    width: 70vw;
+    max-width: 70vw;
+}
+
+#img-container.toTheLeft{
+    transition: transform 2s ease-in;
+    transform: translateX(30%);
+}
+
+#img-container img{
     position: absolute;
     width: 100%;
 }
@@ -45,9 +79,6 @@ img#kanye-talks{
     opacity: 0;
 }
 
-p {
-    font-family: "Nerko One", cursive;
-}
 
 @keyframes fadeImage {
     0% {
