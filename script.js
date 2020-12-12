@@ -8,5 +8,5 @@ reloadQuote.addEventListener('click',()=>{
 
 
 function fadeImage(img){
-    img.style.opacity = 0.1;
+    img.style.animation = `fadeImage linear 1s forwards`
 }
