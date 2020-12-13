@@ -5,6 +5,7 @@ const kanye_talks = document.getElementById('kanye-talks')
 const quoteText = document.getElementById('quote') 
 
 reloadQuote.addEventListener('click',()=>{
+    reloadQuote.classList.toggle('clicked')
     fadeOutImage(kanye_trump_img)
     fadeInImage(kanye_talks)
     img_container.classList.toggle('toTheLeft')
