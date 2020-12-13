@@ -1,4 +1,4 @@
-let reloadQuote = document.getElementById('reload') 
+let reload_quote_icon = document.getElementById('reload') 
 const img_container = document.getElementById('img-container')
 const kanye_trump_img = document.getElementById('kanye-trump-img') 
 const kanye_talks = document.getElementById('kanye-talks')
@@ -6,16 +6,15 @@ const quoteText = document.getElementById('quote')
 
 let isKanyeNotSpeaking = true;
 
-reloadQuote.addEventListener('click',()=>{
+reload_quote_icon.addEventListener('click',()=>{
     if(isKanyeNotSpeaking){
         isKanyeNotSpeaking = false;
         rotateIcon()
         fadeOutImage(kanye_trump_img)
         fadeInImage(kanye_talks)
         createQuoteSpeechBubble().then((res)=>{
-            console.log(`res`,res);
             isKanyeNotSpeaking = res;
-            reloadQuote.classList.remove('disabled')
+            reload_quote_icon.classList.remove('disabled')
         }).catch((res)=>{
             isKanyeNotSpeaking = res;
         })
@@ -23,12 +22,12 @@ reloadQuote.addEventListener('click',()=>{
 })
 
 function rotateIcon(){
-    if(reloadQuote.classList.contains('clicked')){
-        reloadQuote.classList.remove('clicked')
-        reloadQuote.offsetHeight;
+    if(reload_quote_icon.classList.contains('clicked')){
+        reload_quote_icon.classList.remove('clicked')
+        reload_quote_icon.offsetHeight; // Trigger reflow
     }
-    reloadQuote.classList.add('clicked')
-    reloadQuote.classList.add('disabled')
+    reload_quote_icon.classList.add('clicked')
+    reload_quote_icon.classList.add('disabled')
 }
 
 function fadeInImage(img){
