@@ -29,14 +29,19 @@ h1 i {
     margin: 0 1rem;
     cursor: pointer;
 }
-
 h1 i:hover {
     color: #bbff00;
 }
+
 h1 i.clicked {
-    transform: rotate(360deg);
-    transition: transform 1s linear;
+    animation: rotateIcon 1.5s linear forwards;
 }
+h1 i.clicked.disabled {
+    color: black;
+    cursor: default;
+}
+
+
 
 main {
     position: fixed;
@@ -86,6 +91,12 @@ p#quote.hidden {
 }
 #img-container img#kanye-talks {
     opacity: 0;
+}
+
+@keyframes rotateIcon {
+    to{
+        transform: rotate(360deg)
+    }
 }
 
 @keyframes fadeImage {

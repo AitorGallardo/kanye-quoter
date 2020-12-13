@@ -10,5 +10,6 @@
 
  ## OPTION 2
 
- ### Set the images and text as a backround of the page and *Kanye West says.. -reload-* on the middle of the page.
+ ### ✔ Set the images and text as a backround of the page and *Kanye West says.. -reload-* on the middle of the page. 
+ ### Make kanyes go to the right, when it reaches final of the page, then he comes off from the top going to the bottom, the he comes off from left and goes to the righ. loop it
 
