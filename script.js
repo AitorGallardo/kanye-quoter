@@ -55,8 +55,8 @@ function createQuoteSpeechBubble(){
         try{
         const quote = await getQuote();
         let i = 1;
-            quoteText.classList.toggle('hidden')
-            moveKanye('right', quote.length/10)
+            quoteText.classList.remove('hidden')
+            moveKanye(quote.length/10,'right')
            
                 const writeQuoteInterval = setInterval(() => {        
                     const text = quote.slice(0, i);
@@ -80,15 +80,28 @@ function createQuoteSpeechBubble(){
 }
 
 
-function moveKanye(direction,transitionDuration){
+function moveKanye(transitionDuration,direction){
 
     if(direction==='right'){
-        moveToTheRight();
+        moveToTheRight(50);
+        const imageClientBounds = kanye_talks.getBoundingClientRect()
+        console.log(`image`,imageClientBounds);
+        const vw = document.documentElement.clientWidth
+        const hasCrossedViewPortRightBounds = imageClientBounds.left > vw;
+
+        if(hasCrossedViewPortRightBounds){
+            const offsetTop = imageClientBounds.top+imageClientBounds.height;
+            kanye_talks.style.opacity = `0`;
+            kanye_talks.style.top = `-${offsetTop}px`;        
+            kanye_talks.style.transform = 'rotate(180deg) translateY(0)'
+            kanye_talks.style.opacity = `1`;
+        }
+
     }else{
         moveToTheBottom();
     }
-    function moveToTheRight(){
-        let translateXPercentage = 20;
+    function moveToTheRight(translateXPercentage = 20){ 
+
         if(kanye_talks.style.transform){
             const i = kanye_talks.style.transform.indexOf('(')+1;
             const actualXTranslation = parseInt(kanye_talks.style.transform.slice(i,kanye_talks.style.transform.length-2));
@@ -97,6 +110,8 @@ function moveKanye(direction,transitionDuration){
         }else{
             kanye_talks.style.transform = `translateX(20%)`
         }
+
+
         kanye_talks.style.transition = `${transitionDuration}s linear`
     }
     function moveToTheBottom(){}
