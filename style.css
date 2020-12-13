@@ -34,48 +34,47 @@ h1 i:hover {
 }
 
 main{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    position: relative;
+    width: 100vw;
     padding: 2rem;
 }
 
 p#quote {
-    display: inline-block;
+    position: absolute;
+    left: 30%;
     background-color: rgb(223, 223, 230, 0.3);
     padding: 1rem;
     border-radius: 20px;
     font-family: "Nerko One", cursive;
     word-wrap: break-word;
+    min-width: 30vw;
     max-width: 30vw;
-    opacity: 1;
-    transition: opacity 3s ease;
 }
 
 p#quote.hidden {
-    display: none;
     opacity: 0;
     font-family: "Nerko One", cursive;
 }
 
 #img-container {
     background-color: red;
-    position: relative;
-    width: 70vw;
-    max-width: 70vw;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 80%;
 }
 
 #img-container.toTheLeft{
-    transition: transform 2s ease-in;
-    transform: translateX(30%);
+    transform: translateX(20%);
+    transition: 9s linear;
 }
-
 #img-container img{
     position: absolute;
     width: 100%;
+    height: auto;
 }
-img#kanye-talks{
+#img-container img#kanye-talks{
     opacity: 0;
 }
 

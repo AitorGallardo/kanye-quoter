@@ -7,7 +7,7 @@ const quoteText = document.getElementById('quote')
 reloadQuote.addEventListener('click',()=>{
     fadeOutImage(kanye_trump_img)
     fadeInImage(kanye_talks)
-    //img_container.classList.toggle('toTheLeft')
+    img_container.classList.toggle('toTheLeft')
     createQuoteSpeechBubble();
 })
 
@@ -35,13 +35,13 @@ async function createQuoteSpeechBubble(){
     const quote = await getQuote();
     let i = 1;
     quoteText.classList.toggle('hidden')
-    // const writeQuoteInterval = setInterval(() => {        
-    //     const text = quote.slice(0, i);
-    //     quoteText.innerText = text;
-    //     i++;
-    //     checkClearInterval();
+    const writeQuoteInterval = setInterval(() => {        
+        const text = quote.slice(0, i);
+        quoteText.innerText = text;
+        i++;
+        checkClearInterval();
 
-    // }, 100);
+    }, 100);
 
     function checkClearInterval(){
         if(i>quote.length){
