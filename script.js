@@ -5,6 +5,7 @@ const kanye_talks = document.getElementById('kanye-talks')
 const quoteText = document.getElementById('quote') 
 
 let isKanyeNotSpeaking = true;
+let kanyeImgMovementDirection = 'right';
 
 reload_quote_icon.addEventListener('click',()=>{
     if(isKanyeNotSpeaking){
@@ -56,7 +57,7 @@ function createQuoteSpeechBubble(){
         const quote = await getQuote();
         let i = 1;
             quoteText.classList.remove('hidden')
-            moveKanye(quote.length/10,'right')
+            moveKanye(quote.length/10)
            
                 const writeQuoteInterval = setInterval(() => {        
                     const text = quote.slice(0, i);
@@ -82,26 +83,42 @@ function createQuoteSpeechBubble(){
 
 function moveKanye(transitionDuration,direction){
 
-    if(direction==='right'){
-        moveToTheRight(50);
-        const imageClientBounds = kanye_talks.getBoundingClientRect()
-        console.log(`image`,imageClientBounds);
-        const vw = document.documentElement.clientWidth
-        const hasCrossedViewPortRightBounds = imageClientBounds.left > vw;
+    kanyeImgMovementDirection = direction ? direction:kanyeImgMovementDirection;
 
+    const imageClientBounds = kanye_talks.getBoundingClientRect()
+
+    const viewPort = {width: document.documentElement.clientWidth, height: document.documentElement.clientHeight}
+    
+    if(kanyeImgMovementDirection === 'right'){
+        moveToTheRight(50);
+        
+        const hasCrossedViewPortRightBounds = imageClientBounds.left > viewPort.width;
+        
+        
         if(hasCrossedViewPortRightBounds){
+            kanyeImgMovementDirection = 'bottom'
             const offsetTop = imageClientBounds.top+imageClientBounds.height;
-            kanye_talks.style.opacity = `0`;
             kanye_talks.style.top = `-${offsetTop}px`;        
             kanye_talks.style.transform = 'rotate(180deg) translateY(0)'
-            kanye_talks.style.opacity = `1`;
         }
-
+        
     }else{
-        moveToTheBottom();
-    }
-    function moveToTheRight(translateXPercentage = 20){ 
+        moveToTheBottom(50);
+        const hasCrossedViewPortBottomBounds = imageClientBounds.top > viewPort.height;
 
+        console.log(`imageClientBounds`,imageClientBounds);
+
+        if(hasCrossedViewPortBottomBounds){
+            kanyeImgMovementDirection = 'right'            
+            kanye_talks.style.transform = 'rotate(0deg) translateY(0)'
+            kanye_talks.style.top = `initial`;
+            const offsetLeft = imageClientBounds.right;
+            kanye_talks.style.left = `-${offsetLeft}px`;        
+        }
+    }
+
+
+    function moveToTheRight(translateXPercentage = 20){ 
         if(kanye_talks.style.transform){
             const i = kanye_talks.style.transform.indexOf('(')+1;
             const actualXTranslation = parseInt(kanye_talks.style.transform.slice(i,kanye_talks.style.transform.length-2));
@@ -114,6 +131,20 @@ function moveKanye(transitionDuration,direction){
 
         kanye_talks.style.transition = `${transitionDuration}s linear`
     }
-    function moveToTheBottom(){}
+    function moveToTheBottom(translateYPercentage = 20){ // negative in y axis cause the image is rotated 
+
+        if(kanye_talks.style.transform){
+            const getIndexWithMinusSymbol = kanye_talks.style.transform.indexOf('-');
+            const i =  getIndexWithMinusSymbol > -1 ? getIndexWithMinusSymbol+1: kanye_talks.style.transform.indexOf('Y')+2;
+            const actualYTranslation = parseInt(kanye_talks.style.transform.slice(i,kanye_talks.style.transform.length-2));
+            const newTranslationY = actualYTranslation+translateYPercentage;
+            kanye_talks.style.transform = `rotate(180deg) translateY(-${newTranslationY}%)`;
+        }else{
+            kanye_talks.style.transform = `rotate(180deg) translateY(-20%)`
+        }
+
+
+        kanye_talks.style.transition = `${transitionDuration}s linear`
+    }
 }
 
