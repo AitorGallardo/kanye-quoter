@@ -8,7 +8,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /*height: 100vh;*/
+    height: 100vh;
     align-items: center;
     background: rgb(210, 165, 109);
     background: linear-gradient(90deg, rgba(210, 165, 109, 1) 0%, rgba(189, 126, 74, 1) 35%, rgba(131, 80, 46, 1) 100%);
@@ -33,10 +33,13 @@ h1 i:hover {
     border: 0.1rem solid white;
 }
 
-main{
-    position: relative;
+main {
+    position: fixed;
     width: 100vw;
-    padding: 2rem;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: -99;
 }
 
 p#quote {
@@ -57,27 +60,28 @@ p#quote.hidden {
 }
 
 #img-container {
-    background-color: red;
     position: absolute;
-    left: 50%;
+    margin: auto;
     top: 0;
-    transform: translateX(-50%);
-    width: 80%;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 45%;
+    height: 60%;
 }
 
-#img-container.toTheLeft{
+#img-container.toTheLeft {
     transform: translateX(20%);
     transition: 9s linear;
 }
-#img-container img{
+#img-container img {
     position: absolute;
     width: 100%;
     height: auto;
 }
-#img-container img#kanye-talks{
+#img-container img#kanye-talks {
     opacity: 0;
 }
-
 
 @keyframes fadeImage {
     0% {
@@ -97,3 +101,13 @@ p#quote.hidden {
     }
 }
 
+@media screen and (min-width:761px) and (max-width: 1300px) {
+    body #img-container {
+        width: 60%;
+    }
+}
+@media screen and (max-width: 760px) {
+    #img-container {
+        width: 80%;
+    }
+}

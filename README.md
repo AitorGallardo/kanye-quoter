@@ -10,4 +10,5 @@
 
  ## OPTION 2
 
- ### Set the images and text as a backround of the page and *Kanye West says.. -reload-* on the middle of the page. 
+ ### Set the images and text as a backround of the page and *Kanye West says.. -reload-* on the middle of the page.
+
