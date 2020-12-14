@@ -58,21 +58,25 @@ function createQuoteSpeechBubble() {
         try {
             const quote = await getQuote();
             const factor = 10;
-            let i = 1;
+            let i = 0;
             quoteText.classList.remove('hidden')
             moveKanye(quote.length / factor)
 
             const writeQuoteInterval = setInterval(() => {
-                kanyemouth('E',i)
-                const text = quote.slice(0, i);
-                quoteText.innerText = text;
+
+                const char = quote.slice(i, i+1);
+                const actualText = quote.slice(0, i+1);
+           
+                kanyemouth(char,i)
+                quoteText.innerText = actualText;
+                
                 i++;
                 checkClearInterval();
 
             }, 1000/factor);
 
             function checkClearInterval() {
-                if (i > quote.length) {
+                if (i > quote.length-1) {
                     clearInterval(writeQuoteInterval);
                     resolve(true);
                 }
