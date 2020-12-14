@@ -121,7 +121,19 @@ function createCharAnimation(pos0,pos1,i){
     const y = pos1.y-pos0.y;
     const movingChar = document.getElementById(`movingChar${i}`)
     movingChar.style.transform = `translate(${x}px,${y}px)`
-    movingChar.style.transition = `transform 3s linear`
+    const animation_duration = 3;
+    movingChar.style.transition = `transform ${animation_duration}s linear`
+    const transition_duration_promise = new Promise((resolve,reject)=>{
+        setTimeout(() => {
+            resolve(true)            
+        },1000* (animation_duration - (animation_duration/5)));
+    })
+
+    transition_duration_promise.then((r)=>{
+        movingChar.style.opacity = '0'
+        movingChar.style.transition = `opacity 1s linear`
+        movingChar.remove()
+    })
 }
 
 function moveKanye(transitionDuration, direction) {
