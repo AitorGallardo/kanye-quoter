@@ -5,19 +5,8 @@
 
 ## TODO
 
-### Make chars come off kanye's mouth and transition them into the speech bubble.
- - One approach would be to get the position of kanye's mouth, then create a <p></p> element with the char, and then translate it to the bubble, before arrive fade out, and then pake it appear at the original text.
-
- ## OPTION 2
-
- ### ✔ Set the images and text as a backround of the page and *Kanye West says.. -reload-* on the middle of the page. 
- ### Make kanyes go to the right, when it reaches final of the page, then he comes off from the top going to the bottom, the he comes off from left and goes to the righ. loop it
+### Mirror the image when it comes from the left side towards the right.
 
 
 
-
- FALTA 
- - ✔ CHARACTERES IGUAL AL FONT SIZE
- - ✔ DIV DEL TEXT SE INVISIBLE I LUEGO SE RELLENA
- -  DISTANCIA QUE SE MUEVE KANYE IGUAL FACTORIZADA CON LAS LETRAS
 

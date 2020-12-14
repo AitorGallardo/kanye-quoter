@@ -96,9 +96,12 @@ function createCharOnMouth(char, i) {
     const image_kanye_ClientBounds = kanye_talks.getBoundingClientRect()
 
     const pos0 = {}
+    const mouthPosition = getKanye_talksRotationValue() === 0 ? {x: 0.55, y: 0.2} : {x: 0.43, y: 0.75}
+    console.log(`rotationvalue`,getKanye_talksRotationValue());
 
-    pos0.x = image_kanye_ClientBounds.left + image_kanye_ClientBounds.width * 0.55
-    pos0.y = image_kanye_ClientBounds.top + image_kanye_ClientBounds.height * 0.2
+
+    pos0.x = image_kanye_ClientBounds.left + image_kanye_ClientBounds.width * mouthPosition.x
+    pos0.y = image_kanye_ClientBounds.top + image_kanye_ClientBounds.height * mouthPosition.y
 
     const p = document.createElement('p')
     p.id = `movingChar${i}`
@@ -158,21 +161,21 @@ function moveKanye(transitionDuration, direction) {
     if (kanyeImgMovementDirection === 'right') {
 
         moveToTheRight(imageTranslation).then((res) => {
-            setKanye_talks_transition('none')
+            setKanye_talksTransition('none')
             const imageClientBounds = kanye_talks.getBoundingClientRect()
             const hasCrossedViewPortRightBounds = imageClientBounds.left > viewPort.width;
             if (hasCrossedViewPortRightBounds) {
                 kanyeImgMovementDirection = 'bottom'
                 const offsetTop = imageClientBounds.top + imageClientBounds.height;
                 kanye_talks.style.top = `-${offsetTop}px`;
-                setKanye_talks_transformation(180, 0, undefined)
+                setKanye_talksTransformation(180, 0, undefined)
             }
         })
 
     } else {
 
         moveToTheBottom(-imageTranslation).then((res) => {
-            setKanye_talks_transition('none')
+            setKanye_talksTransition('none')
             const imageClientBounds = kanye_talks.getBoundingClientRect()
             const hasCrossedViewPortBottomBounds = imageClientBounds.top > viewPort.height;
 
@@ -180,7 +183,7 @@ function moveKanye(transitionDuration, direction) {
                 kanyeImgMovementDirection = 'right'
                 const offsetLeft = imageClientBounds.right;
                 kanye_talks.style.left = `-${offsetLeft}px`;
-                setKanye_talks_transformation(0, undefined, 0)
+                setKanye_talksTransformation(0, undefined, 0)
                 kanye_talks.style.top = `0px`;
             }
         })
@@ -189,11 +192,11 @@ function moveKanye(transitionDuration, direction) {
 
     function moveToTheRight(translateXPercentage = 20) {
         return new Promise((resolve, reject) => {
-            const actualXTranslation = getTranslationValue('x');
+            const actualXTranslation = getKanye_talksTranslationValue('x');
             const newTranslationX = actualXTranslation + translateXPercentage;
-            setKanye_talks_transformation(undefined, newTranslationX, undefined)
+            setKanye_talksTransformation(undefined, newTranslationX, undefined)
 
-            setKanye_talks_transition(transitionDuration)
+            setKanye_talksTransition(transitionDuration)
             const timeFactor = 1000;
             setTimeout(() => {
                 resolve(transitionDuration);
@@ -202,11 +205,11 @@ function moveKanye(transitionDuration, direction) {
     }
     function moveToTheBottom(translateYPercentage = -20) { // negative in y axis cause the image is rotated 
         return new Promise((resolve, reject) => {
-            const actualYTranslation = getTranslationValue('y');
+            const actualYTranslation = getKanye_talksTranslationValue('y');
             const newTranslationY = actualYTranslation + translateYPercentage;
-            setKanye_talks_transformation(undefined, undefined, newTranslationY)
+            setKanye_talksTransformation(undefined, undefined, newTranslationY)
 
-            setKanye_talks_transition(transitionDuration)
+            setKanye_talksTransition(transitionDuration)
             const timeFactor = 1000;
             setTimeout(() => {
                 resolve(transitionDuration);
@@ -215,44 +218,44 @@ function moveKanye(transitionDuration, direction) {
 
     }
 
-    function setKanye_talks_transformation(rotate, translateX, translateY) {
-        rotate = rotate !== undefined ? rotate : getRotationValue();
-        translateX = translateX !== undefined ? translateX : getTranslationValue('x');
-        translateY = translateY !== undefined ? translateY : getTranslationValue('y');
-
-        kanye_talks.style.transform = `rotate(${rotate}deg) translateX(${translateX}%) translateY(${translateY}%)`;
-    }
-
-    function setKanye_talks_transition(duration) {
-        duration === 'none' ? kanye_talks.style.transition = `none` : kanye_talks.style.transition = `${duration}s linear`
-    }
-
-    function getRotationValue() {
-        const rotation = getTransformationPropertiesfArray()[0];
-        const startingIndex = rotation.indexOf('(') + 1;
-        return rotation.slice(startingIndex, rotation.length - 4)
-    }
-
-    function getTranslationValue(type) {
-        const arr = getTransformationPropertiesfArray()
-        const translation = type === 'x' ? getTransformationPropertiesfArray()[1] : getTransformationPropertiesfArray()[2];
-        const negativeValue = translation.indexOf('-');
-        let value = '0';
-        if (negativeValue > -1) {
-            const startingIndex = negativeValue + 1;
-            value = `-` + translation.slice(startingIndex, translation.length - 2)
-        } else {
-            const startingIndex = translation.indexOf('(') + 1;
-            value = translation.slice(startingIndex, translation.length - 2)
-        }
-
-        return parseInt(value);
-    }
-
-    function getTransformationPropertiesfArray() {
-        if (kanye_talks.style.transform) return kanye_talks.style.transform.split(' ');
-
-        return `rotate(0deg) translateX(0%) translateY(0%)`.split(' ');
-    }
 }
 
+function setKanye_talksTransformation(rotate, translateX, translateY) {
+    rotate = rotate !== undefined ? rotate : getKanye_talksRotationValue();
+    translateX = translateX !== undefined ? translateX : getKanye_talksTranslationValue('x');
+    translateY = translateY !== undefined ? translateY : getKanye_talksTranslationValue('y');
+
+    kanye_talks.style.transform = `rotate(${rotate}deg) translateX(${translateX}%) translateY(${translateY}%)`;
+}
+
+function setKanye_talksTransition(duration) {
+    duration === 'none' ? kanye_talks.style.transition = `none` : kanye_talks.style.transition = `${duration}s linear`
+}
+
+function getKanye_talksRotationValue() {
+    const rotation = getKanye_talksTransformationPropertiesfArray()[0];
+    const startingIndex = rotation.indexOf('(') + 1;
+    return parseInt(rotation.slice(startingIndex, rotation.length - 4))
+}
+
+function getKanye_talksTranslationValue(type) {
+    const arr = getKanye_talksTransformationPropertiesfArray()
+    const translation = type === 'x' ? getKanye_talksTransformationPropertiesfArray()[1] : getKanye_talksTransformationPropertiesfArray()[2];
+    const negativeValue = translation.indexOf('-');
+    let value = '0';
+    if (negativeValue > -1) {
+        const startingIndex = negativeValue + 1;
+        value = `-` + translation.slice(startingIndex, translation.length - 2)
+    } else {
+        const startingIndex = translation.indexOf('(') + 1;
+        value = translation.slice(startingIndex, translation.length - 2)
+    }
+
+    return parseInt(value);
+}
+
+function getKanye_talksTransformationPropertiesfArray() {
+    if (kanye_talks.style.transform) return kanye_talks.style.transform.split(' ');
+
+    return `rotate(0deg) translateX(0%) translateY(0%)`.split(' ');
+}
