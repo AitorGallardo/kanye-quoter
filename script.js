@@ -57,17 +57,19 @@ function createQuoteSpeechBubble() {
     return new Promise(async (resolve, reject) => {
         try {
             const quote = await getQuote();
+            const factor = 10;
             let i = 1;
             quoteText.classList.remove('hidden')
-            moveKanye(quote.length / 10)
+            moveKanye(quote.length / factor)
 
             const writeQuoteInterval = setInterval(() => {
+                kanyemouth('E',i)
                 const text = quote.slice(0, i);
                 quoteText.innerText = text;
                 i++;
                 checkClearInterval();
 
-            }, 100);
+            }, 1000/factor);
 
             function checkClearInterval() {
                 if (i > quote.length) {
@@ -82,23 +84,25 @@ function createQuoteSpeechBubble() {
     })
 }
 /**TODO get point on the right side of the thext =x1 and x0 initial keymouth pos, then translate with animation and fade off on reach the target */
-function kanyemouth(){
+function kanyemouth(char,i){
 
     const image_kanye_ClientBounds = kanye_talks.getBoundingClientRect()
 
-    const posX = image_kanye_ClientBounds.left + image_kanye_ClientBounds.width * 0.55
-    const posY = image_kanye_ClientBounds.top + image_kanye_ClientBounds.height * 0.2
+    const pos0 = {}
+
+    pos0.x = image_kanye_ClientBounds.left + image_kanye_ClientBounds.width * 0.55
+    pos0.y = image_kanye_ClientBounds.top + image_kanye_ClientBounds.height * 0.2
 
     const p = document.createElement('p')
-    p.id = 'movingChar'
-    p.innerText = 'A'
+    p.id = `movingChar${i}`
+    p.innerText = char;
     p.style.position = 'absolute'
-    p.style.left = `${posX}px`
-    p.style.top = `${posY}px`
+    p.style.left = `${pos0.x}px`
+    p.style.top = `${pos0.y}px`
     p.style.zIndex = `99`
     main.appendChild(p)
-    const pos = getQuoteContainerPosition()
-    createCharAnimation({x:posX,y:posY},pos)
+    const pos1 = getQuoteContainerPosition()
+    createCharAnimation(pos0,pos1,i)
 }
 
 function getQuoteContainerPosition(){
@@ -112,10 +116,10 @@ function getQuoteContainerPosition(){
     return pos;
 }
 
-function createCharAnimation(pos0,pos1){
+function createCharAnimation(pos0,pos1,i){
     const x = pos1.x-pos0.x;
     const y = pos1.y-pos0.y;
-    const movingChar = document.getElementById('movingChar')
+    const movingChar = document.getElementById(`movingChar${i}`)
     movingChar.style.transform = `translate(${x}px,${y}px)`
     movingChar.style.transition = `transform 3s linear`
 }
@@ -132,7 +136,6 @@ function moveKanye(transitionDuration, direction) {
             setKanye_talks_transition('none')
             const imageClientBounds = kanye_talks.getBoundingClientRect()
             const hasCrossedViewPortRightBounds = imageClientBounds.left > viewPort.width;
-            kanyemouth()
             if (hasCrossedViewPortRightBounds) {
                 kanyeImgMovementDirection = 'bottom'
                 const offsetTop = imageClientBounds.top + imageClientBounds.height;
