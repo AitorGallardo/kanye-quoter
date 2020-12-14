@@ -84,19 +84,40 @@ function createQuoteSpeechBubble() {
 /**TODO get point on the right side of the thext =x1 and x0 initial keymouth pos, then translate with animation and fade off on reach the target */
 function kanyemouth(){
 
-    const imageClientBounds = kanye_talks.getBoundingClientRect()
+    const image_kanye_ClientBounds = kanye_talks.getBoundingClientRect()
 
-    const posX = imageClientBounds.left + imageClientBounds.width * 0.55
-    const posY = imageClientBounds.top + imageClientBounds.height * 0.2
+    const posX = image_kanye_ClientBounds.left + image_kanye_ClientBounds.width * 0.55
+    const posY = image_kanye_ClientBounds.top + image_kanye_ClientBounds.height * 0.2
 
     const p = document.createElement('p')
+    p.id = 'movingChar'
     p.innerText = 'A'
     p.style.position = 'absolute'
     p.style.left = `${posX}px`
     p.style.top = `${posY}px`
     p.style.zIndex = `99`
     main.appendChild(p)
-    console.log(`image`,posX,posY);
+    const pos = getQuoteContainerPosition()
+    createCharAnimation({x:posX,y:posY},pos)
+}
+
+function getQuoteContainerPosition(){
+    const quoute_clientBounds = quoteText.getBoundingClientRect()
+
+    const pos = {}
+
+    pos.x = quoute_clientBounds.right
+    pos.y = quoute_clientBounds.bottom - (quoute_clientBounds.height/2)
+
+    return pos;
+}
+
+function createCharAnimation(pos0,pos1){
+    const x = pos1.x-pos0.x;
+    const y = pos1.y-pos0.y;
+    const movingChar = document.getElementById('movingChar')
+    movingChar.style.transform = `translate(${x}px,${y}px)`
+    movingChar.style.transition = `transform 3s linear`
 }
 
 function moveKanye(transitionDuration, direction) {
