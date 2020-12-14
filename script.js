@@ -15,7 +15,7 @@ reload_quote_icon.addEventListener('click', () => {
         rotateIcon()
         fadeOutImage(kanye_trump_img)
         fadeInImage(kanye_talks)
-        quoteText.classList.add('hidden')
+        
         createQuoteSpeechBubble().then((res) => {
             isKanyeNotSpeaking = res;
             reload_quote_icon.classList.remove('disabled')
@@ -60,7 +60,7 @@ function createQuoteSpeechBubble() {
             const quote = await getQuote();
             const factor = 10;
             let i = 0;
-
+            quoteText.classList.add('hidden')
             moveKanye(quote.length / factor)
 
             const writeQuoteInterval = setInterval(() => {
@@ -68,7 +68,7 @@ function createQuoteSpeechBubble() {
                 const char = quote.slice(i, i + 1);
                 const actualText = quote.slice(0, i + 1);
 
-                kanyemouth(char, i).then((res)=>{
+                createCharOnMouth(char, i).then((res)=>{
                     quoteText.classList.remove('hidden')
                     quoteText.innerText = actualText;
                 })
@@ -91,7 +91,7 @@ function createQuoteSpeechBubble() {
     })
 }
 /**TODO get point on the right side of the thext =x1 and x0 initial keymouth pos, then translate with animation and fade off on reach the target */
-function kanyemouth(char, i) {
+function createCharOnMouth(char, i) {
 
     const image_kanye_ClientBounds = kanye_talks.getBoundingClientRect()
 
@@ -153,9 +153,11 @@ function moveKanye(transitionDuration, direction) {
 
     const viewPort = { width: document.documentElement.clientWidth, height: document.documentElement.clientHeight }
 
+    const imageTranslation = transitionDuration*10;
+
     if (kanyeImgMovementDirection === 'right') {
 
-        moveToTheRight(50).then((res) => {
+        moveToTheRight(imageTranslation).then((res) => {
             setKanye_talks_transition('none')
             const imageClientBounds = kanye_talks.getBoundingClientRect()
             const hasCrossedViewPortRightBounds = imageClientBounds.left > viewPort.width;
@@ -169,7 +171,7 @@ function moveKanye(transitionDuration, direction) {
 
     } else {
 
-        moveToTheBottom(-50).then((res) => {
+        moveToTheBottom(-imageTranslation).then((res) => {
             setKanye_talks_transition('none')
             const imageClientBounds = kanye_talks.getBoundingClientRect()
             const hasCrossedViewPortBottomBounds = imageClientBounds.top > viewPort.height;
