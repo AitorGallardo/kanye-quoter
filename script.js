@@ -4,6 +4,8 @@ const kanye_trump_img = document.getElementById('kanye-trump-img')
 const kanye_talks = document.getElementById('kanye-talks')
 const quoteText = document.getElementById('quote')
 
+const main = document.querySelector('main')
+
 let isKanyeNotSpeaking = true;
 let kanyeImgMovementDirection = 'right';
 
@@ -79,7 +81,23 @@ function createQuoteSpeechBubble() {
         }
     })
 }
+/**TODO get point on the right side of the thext =x1 and x0 initial keymouth pos, then translate with animation and fade off on reach the target */
+function kanyemouth(){
 
+    const imageClientBounds = kanye_talks.getBoundingClientRect()
+
+    const posX = imageClientBounds.left + imageClientBounds.width * 0.55
+    const posY = imageClientBounds.top + imageClientBounds.height * 0.2
+
+    const p = document.createElement('p')
+    p.innerText = 'A'
+    p.style.position = 'absolute'
+    p.style.left = `${posX}px`
+    p.style.top = `${posY}px`
+    p.style.zIndex = `99`
+    main.appendChild(p)
+    console.log(`image`,posX,posY);
+}
 
 function moveKanye(transitionDuration, direction) {
 
@@ -93,7 +111,7 @@ function moveKanye(transitionDuration, direction) {
             setKanye_talks_transition('none')
             const imageClientBounds = kanye_talks.getBoundingClientRect()
             const hasCrossedViewPortRightBounds = imageClientBounds.left > viewPort.width;
-            
+            kanyemouth()
             if (hasCrossedViewPortRightBounds) {
                 kanyeImgMovementDirection = 'bottom'
                 const offsetTop = imageClientBounds.top + imageClientBounds.height;
