@@ -15,6 +15,7 @@ reload_quote_icon.addEventListener('click', () => {
         rotateIcon()
         fadeOutImage(kanye_trump_img)
         fadeInImage(kanye_talks)
+        quoteText.classList.add('hidden')
         createQuoteSpeechBubble().then((res) => {
             isKanyeNotSpeaking = res;
             reload_quote_icon.classList.remove('disabled')
@@ -59,24 +60,26 @@ function createQuoteSpeechBubble() {
             const quote = await getQuote();
             const factor = 10;
             let i = 0;
-            quoteText.classList.remove('hidden')
+
             moveKanye(quote.length / factor)
 
             const writeQuoteInterval = setInterval(() => {
 
-                const char = quote.slice(i, i+1);
-                const actualText = quote.slice(0, i+1);
-           
-                kanyemouth(char,i)
-                quoteText.innerText = actualText;
-                
+                const char = quote.slice(i, i + 1);
+                const actualText = quote.slice(0, i + 1);
+
+                kanyemouth(char, i).then((res)=>{
+                    quoteText.classList.remove('hidden')
+                    quoteText.innerText = actualText;
+                })
+
                 i++;
                 checkClearInterval();
 
-            }, 1000/factor);
+            }, 1000 / factor);
 
             function checkClearInterval() {
-                if (i > quote.length-1) {
+                if (i > quote.length - 1) {
                     clearInterval(writeQuoteInterval);
                     resolve(true);
                 }
@@ -88,7 +91,7 @@ function createQuoteSpeechBubble() {
     })
 }
 /**TODO get point on the right side of the thext =x1 and x0 initial keymouth pos, then translate with animation and fade off on reach the target */
-function kanyemouth(char,i){
+function kanyemouth(char, i) {
 
     const image_kanye_ClientBounds = kanye_talks.getBoundingClientRect()
 
@@ -106,37 +109,41 @@ function kanyemouth(char,i){
     p.style.zIndex = `99`
     main.appendChild(p)
     const pos1 = getQuoteContainerPosition()
-    createCharAnimation(pos0,pos1,i)
+
+    return createCharAnimation(pos0, pos1, i)
 }
 
-function getQuoteContainerPosition(){
+function getQuoteContainerPosition() {
     const quoute_clientBounds = quoteText.getBoundingClientRect()
 
     const pos = {}
 
     pos.x = quoute_clientBounds.right
-    pos.y = quoute_clientBounds.bottom - (quoute_clientBounds.height/2)
+    pos.y = quoute_clientBounds.bottom - (quoute_clientBounds.height / 2)
 
     return pos;
 }
 
-function createCharAnimation(pos0,pos1,i){
-    const x = pos1.x-pos0.x;
-    const y = pos1.y-pos0.y;
-    const movingChar = document.getElementById(`movingChar${i}`)
-    movingChar.style.transform = `translate(${x}px,${y}px)`
-    const animation_duration = 3;
-    movingChar.style.transition = `transform ${animation_duration}s linear`
-    const transition_duration_promise = new Promise((resolve,reject)=>{
-        setTimeout(() => {
-            resolve(true)            
-        },1000* (animation_duration - (animation_duration/5)));
-    })
+function createCharAnimation(pos0, pos1, i) {
+    return new Promise((resolve, reject) => {
+        const x = pos1.x - pos0.x;
+        const y = pos1.y - pos0.y;
+        const movingChar = document.getElementById(`movingChar${i}`)
+        movingChar.style.transform = `translate(${x}px,${y}px)`
+        const animation_duration = 3;
+        movingChar.style.transition = `transform ${animation_duration}s linear`
+        const transition_duration_promise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(true)
+            }, 1000 * (animation_duration - (animation_duration / 5)));
+        })
 
-    transition_duration_promise.then((r)=>{
-        movingChar.style.opacity = '0'
-        movingChar.style.transition = `opacity 1s linear`
-        movingChar.remove()
+        transition_duration_promise.then((r) => {
+            movingChar.style.opacity = '0'
+            movingChar.style.transition = `opacity 1s linear`
+            movingChar.remove()
+            resolve(true)
+        })
     })
 }
 
@@ -148,7 +155,7 @@ function moveKanye(transitionDuration, direction) {
 
     if (kanyeImgMovementDirection === 'right') {
 
-        moveToTheRight(50).then((res)=>{
+        moveToTheRight(50).then((res) => {
             setKanye_talks_transition('none')
             const imageClientBounds = kanye_talks.getBoundingClientRect()
             const hasCrossedViewPortRightBounds = imageClientBounds.left > viewPort.width;
@@ -156,22 +163,22 @@ function moveKanye(transitionDuration, direction) {
                 kanyeImgMovementDirection = 'bottom'
                 const offsetTop = imageClientBounds.top + imageClientBounds.height;
                 kanye_talks.style.top = `-${offsetTop}px`;
-                setKanye_talks_transformation(180,0,undefined)          
+                setKanye_talks_transformation(180, 0, undefined)
             }
         })
-        
+
     } else {
 
-        moveToTheBottom(-50).then((res)=>{
+        moveToTheBottom(-50).then((res) => {
             setKanye_talks_transition('none')
             const imageClientBounds = kanye_talks.getBoundingClientRect()
             const hasCrossedViewPortBottomBounds = imageClientBounds.top > viewPort.height;
-            
+
             if (hasCrossedViewPortBottomBounds) {
                 kanyeImgMovementDirection = 'right'
                 const offsetLeft = imageClientBounds.right;
                 kanye_talks.style.left = `-${offsetLeft}px`;
-                setKanye_talks_transformation(0,undefined,0)          
+                setKanye_talks_transformation(0, undefined, 0)
                 kanye_talks.style.top = `0px`;
             }
         })
@@ -179,31 +186,31 @@ function moveKanye(transitionDuration, direction) {
 
 
     function moveToTheRight(translateXPercentage = 20) {
-        return new Promise((resolve,reject)=>{
+        return new Promise((resolve, reject) => {
             const actualXTranslation = getTranslationValue('x');
             const newTranslationX = actualXTranslation + translateXPercentage;
             setKanye_talks_transformation(undefined, newTranslationX, undefined)
-            
+
             setKanye_talks_transition(transitionDuration)
             const timeFactor = 1000;
             setTimeout(() => {
-                resolve(transitionDuration);        
-            }, transitionDuration*timeFactor);
+                resolve(transitionDuration);
+            }, transitionDuration * timeFactor);
         })
     }
     function moveToTheBottom(translateYPercentage = -20) { // negative in y axis cause the image is rotated 
-        return new Promise((resolve,reject)=>{
-        const actualYTranslation = getTranslationValue('y');
-        const newTranslationY = actualYTranslation + translateYPercentage;
-        setKanye_talks_transformation(undefined,undefined,newTranslationY)
+        return new Promise((resolve, reject) => {
+            const actualYTranslation = getTranslationValue('y');
+            const newTranslationY = actualYTranslation + translateYPercentage;
+            setKanye_talks_transformation(undefined, undefined, newTranslationY)
 
-        setKanye_talks_transition(transitionDuration)
-        const timeFactor = 1000;
-        setTimeout(() => {
-            resolve(transitionDuration);        
-        }, transitionDuration*timeFactor);
+            setKanye_talks_transition(transitionDuration)
+            const timeFactor = 1000;
+            setTimeout(() => {
+                resolve(transitionDuration);
+            }, transitionDuration * timeFactor);
         })
-        
+
     }
 
     function setKanye_talks_transformation(rotate, translateX, translateY) {
@@ -214,8 +221,8 @@ function moveKanye(transitionDuration, direction) {
         kanye_talks.style.transform = `rotate(${rotate}deg) translateX(${translateX}%) translateY(${translateY}%)`;
     }
 
-    function setKanye_talks_transition(duration){
-        duration === 'none' ? kanye_talks.style.transition = `none`: kanye_talks.style.transition = `${duration}s linear`
+    function setKanye_talks_transition(duration) {
+        duration === 'none' ? kanye_talks.style.transition = `none` : kanye_talks.style.transition = `${duration}s linear`
     }
 
     function getRotationValue() {
@@ -241,7 +248,7 @@ function moveKanye(transitionDuration, direction) {
     }
 
     function getTransformationPropertiesfArray() {
-        if(kanye_talks.style.transform) return kanye_talks.style.transform.split(' ');
+        if (kanye_talks.style.transform) return kanye_talks.style.transform.split(' ');
 
         return `rotate(0deg) translateX(0%) translateY(0%)`.split(' ');
     }
