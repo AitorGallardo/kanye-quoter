@@ -1,6 +1,11 @@
 # Kanye West Quoter
 
-### A Kanye West web app that shows famous quotes using the [kanye.rest](https://kanye.rest/) REST API.
+### Web app that shows famous quotes using the [kanye.rest](https://kanye.rest/) REST API.
+### By clicking the spinning arrows icon new quotes will be recited by Mr.Kanye.
+
+[Playground](https://codepen.io/AitorGallardo/pen/poKbjeL)
+
+
 
 
 ## TODO
